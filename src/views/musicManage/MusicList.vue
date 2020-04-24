@@ -15,18 +15,22 @@
     <!-- 左边歌单表 -->
     <div style="display:flex;padding: 20px 20px">
       <div class="s-l-table">
-        <mu-data-table :columns="columns" :data="songList" class="s-l-table-content">
+        <mu-data-table
+          :columns="columns"
+          :data="songList.slice(start, end)"
+          class="s-l-table-content"
+        >
           <template slot-scope="scope">
             <td class="is-left">{{scope.row.songListId}}</td>
-                <td class="is-left">{{scope.row.songListName}}</td>
-                <td class="is-right">{{scope.row.songCount}}</td>
-                <td class="is-right">{{scope.row.createTime.slice(0,10)}}</td>
+            <td class="is-left">{{scope.row.songListName}}</td>
+            <td class="is-right">{{scope.row.songCount}}</td>
+            <td class="is-right">{{scope.row.createTime.slice(0,10)}}</td>
           </template>
         </mu-data-table>
         <mu-flex justify-content="center">
           <!-- 每页显示的数量 -->
           <span style="margin-top: 10px">每页显示：</span>
-          <mu-select style="width:70px" v-model="size" full-widt >
+          <mu-select style="width:70px" v-model="size" full-widt>
             <mu-option
               v-for="(option,index) in options"
               :key="index"
@@ -47,7 +51,12 @@
           </mu-tabs>
         </div>
         <div>
-          <div class="demo-text" v-for="(type, index2) in types" :key="index2" style=" overflow: hidden">
+          <div
+            class="demo-text"
+            v-for="(type, index2) in types"
+            :key="index2"
+            style=" overflow: hidden"
+          >
             <!-- 定义表头信息 -->
             <mu-data-table
               :columns="columns"
@@ -55,8 +64,8 @@
               class="childTable"
               v-if="active == index2"
             >
-            <!-- 定义表格内的数据 -->
-              <template slot-scope="scope" >
+              <!-- 定义表格内的数据 -->
+              <template slot-scope="scope">
                 <td class="is-left">{{scope.row.song_list_id}}</td>
                 <td class="is-left">{{scope.row.song_list_name}}</td>
                 <td class="is-right">{{scope.row.song_count}}</td>
@@ -79,7 +88,7 @@ export default {
         name: '',
         order: 'asc'
       },
-      options: ["5", "10", "15"],
+      options: ['5', '10', '15'],
       columns: [
         { title: 'id', width: 120, name: 'name', align: 'center' },
         { title: '名称', name: 'calories', width: 240, align: 'left', sortable: true },
@@ -91,24 +100,42 @@ export default {
       currentPage: 1,
       totalPage: 1000,
       size: 10,
+      page: 1,
       active: 0,
       types: [],
       typeChildSongList: [],
       keywords: '',
+      start: 0,
+      end: 10
     }
   },
   components: {},
   created() {
     this.getSongList()
-    console.log("token的值" + this.token)
   },
   mounted() {},
   watch: {
-    size : function () {
-      this.getSongList()
+    // 侦听器，监听当前页的数量与当前页值的变化
+    size: function(newSize, oldSize) {
+      this.totalPage = (1000/this.size)*10
+      //新值与旧值进行对比
+      if(newSize > oldSize){
+        this.end = this.end + (newSize - oldSize)
+      }else {
+        this.end = this.end - (oldSize - newSize)
+      }
     },
-    currentPage : function () {
-      this.getSongList()
+    currentPage: function(newCurrent, oldCurrent) {
+      if(newCurrent == (1000/this.size)){
+        this.page +=1 
+      }
+      if (newCurrent < oldCurrent && newCurrent >= 0) {
+        this.start -= 10
+        this.end -= 10
+      } else {
+        this.start += 10
+        this.end += 10
+      }
     }
   },
   methods: {
@@ -117,7 +144,7 @@ export default {
       this.axios({
         method: 'get',
         url: 'http://localhost:8080' + item.path,
-        responseType: 'blob',
+        responseType: 'blob'
       }).then((res) => {
         //指定类型位excel表类型
         const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' })
@@ -146,16 +173,17 @@ export default {
         method: 'get',
         url: 'http://localhost:8080/songList/page',
         params: {
-          currentPage: this.currentPage,
-          size: this.size
+          currentPage: this.page,
+          size: 1000
         },
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/x-www-form-urlencoded'
         }
       }).then((res) => {
         this.songList = res.data.data
         this.getButtonMenu()
         this.getSongListType()
+        console.log(this.songList)
       })
     },
 
@@ -169,7 +197,7 @@ export default {
           field: this.keywords
         },
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/x-www-form-urlencoded'
         }
       }).then((res) => {
         this.songList = res.data.data
@@ -183,7 +211,7 @@ export default {
     // },
     // //改变每页显示的数据量
     // changeSelection() {
-    //   this.size = this.selection 
+    //   this.size = this.selection
     //   alert(this.selection)
     // },
 
@@ -192,7 +220,7 @@ export default {
         method: 'get',
         url: 'http://localhost:8080/songList/type',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/x-www-form-urlencoded'
         }
       }).then((res) => {
         //获取各种类型及属于该类型的歌单数据
@@ -247,12 +275,12 @@ export default {
   margin-right: 60px;
   box-shadow: 2px 2px 2px 2px #ddd;
   height: 500px;
-   &-content {
-     height: 450px;
-     overflow-y: auto;
-     overflow-x: hidden;
-     margin-bottom: 10px;
-   }
+  &-content {
+    height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 10px;
+  }
 }
 
 .tabs {

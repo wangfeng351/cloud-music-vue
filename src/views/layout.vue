@@ -93,12 +93,11 @@ export default {
         method: 'get',
         url: 'http://localhost:8080/sysRole/list',
         params: {
-          roleId: this.roleId
+          roleId: 1
         },
         headers:{ 
            'Content-Type':'application/x-www-form-urlencoded',
-          'Authorization': localStorage.getItem('token')
-          },
+         },
       }).then(res => {
         // this.user = res.data.data.user
         // this.menus = res.data.data.permissions
