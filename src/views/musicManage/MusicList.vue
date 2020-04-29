@@ -143,15 +143,15 @@ export default {
     Operation(item) {
       this.axios({
         method: 'get',
-        url: 'http://localhost:8080' + item.path,
+        url: item.path,
         responseType: 'blob'
       }).then((res) => {
-        //指定类型位excel表类型
-        const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' })
+        // 使用Blob创建一个指向性的URL（参数， 参数的类型）
+        //const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' })
         //创建a标签节点
         const download = document.createElement('a')
-        //与获取验证码url方法一样
-        const href = window.URL.createObjectURL(blob)
+        //创建url对象
+        const href = window.URL.createObjectURL(res.data)
         //给超链接的href属性赋url值
         download.href = href
         //设置下载的文件名
@@ -171,7 +171,7 @@ export default {
     getSongList() {
       this.axios({
         method: 'get',
-        url: 'http://localhost:8080/songList/page',
+        url: '/songList/page',
         params: {
           currentPage: this.page,
           size: 1000
@@ -191,7 +191,7 @@ export default {
     search() {
       this.axios({
         method: 'get',
-        url: 'http://localhost:8080/songList/blur',
+        url: '/songList/blur',
         // 问号带参，表单提交
         params: {
           field: this.keywords
@@ -204,21 +204,10 @@ export default {
       })
     },
 
-    // //翻页
-    // changePage() {
-    //   this.currentPage = this.current
-    //   alert(this.current)
-    // },
-    // //改变每页显示的数据量
-    // changeSelection() {
-    //   this.size = this.selection
-    //   alert(this.selection)
-    // },
-
     getSongListType() {
       this.axios({
         method: 'get',
-        url: 'http://localhost:8080/songList/type',
+        url: '/songList/type',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }

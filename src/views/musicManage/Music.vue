@@ -1,14 +1,23 @@
 <template>
   <div class="container1">
-      <div class="operation" v-for="(item, index) in buttonMenu" :key="index">
-        <mu-button color="" @click="batchDelete" v-if="item.title === '批量删除'">
+      <div class="operation">
+        <span  v-for="(item, index) in buttonMenu" :key="index">
+        <mu-button color="" @click="openSimple=true" v-if="item.title === '批量删除'">
          <mu-icon left :value="item.icon"></mu-icon>
         批量删除
         </mu-button>
+
+        <mu-dialog title="删除提醒" width="360" :open.sync="openSimple">
+        确定删除？
+        <mu-button slot="actions" flat color="primary" @click="batchDelete()">确定</mu-button>
+        <mu-button slot="actions" flat color="primary" @click="openSimple=false">取消</mu-button>
+        </mu-dialog>
+
          <mu-button color="error" @click="openAlertDialog()" v-if="item.title === '批量导入'">
           <mu-icon left :value="item.icon"></mu-icon>
           批量导入
         </mu-button>
+        </span>
         <mu-dialog title="批量导入注意事项" style="line-height: 30px" width="600" max-width="80%" :esc-press-close="false" :overlay-close="false" :open.sync="openAlert">
     批量导入时必须严格按照模板样式，没有模板请
     <span @click="downloadModel()" style="color:#1a73e8;font-weight:600;cursor: pointer;">下载模板</span>
@@ -44,8 +53,9 @@
       <mu-list>
         <template v-for="item in songs.slice(start, end)">
           <mu-list-item>
-            <mu-list-item-title style="text-align: left">
-            <span>
+            <mu-list-item-title>
+            <span class="first-c">
+            <mu-checkbox :value="item.songId" v-model="checkbox.value1"></mu-checkbox>
             {{item.songId}}
             </span>
             </mu-list-item-title>
@@ -61,10 +71,10 @@
             <mu-list-item-title>
             <span>{{item.createTime.substring(0,10)}}</span>
             </mu-list-item-title>
-            <mu-list-item-action v-for="(item, index) in buttonMenu" :key="index" style="justify-content:center;">
-            <mu-button color="error" v-if="item.title === '删除'">
-            <mu-icon left :value="item.icon"></mu-icon>
-            {{item.title}}</mu-button>
+            <mu-list-item-action v-for="(item1, index) in buttonMenu" :key="index" style="justify-content:center;">
+            <mu-button @click="singleDelete(item.songId)" color="error" v-if="item1.title === '删除'">
+            <mu-icon left :value="item1.icon"></mu-icon>
+            {{item1.title}}</mu-button>
             </mu-list-item-action>
           </mu-list-item>
           <mu-divider />
@@ -80,6 +90,7 @@ export default {
  name: 'Music',
   data() {
     return {
+      openSimple: false,
       songs: [],
       refreshing: false,
       loading: false,
@@ -94,7 +105,11 @@ export default {
       ],
       dateFilter: '',
       keywords: '',
-      openAlert: false
+      openAlert: false,
+      checkbox: {
+        value1: [],
+      },
+      checkAll: ''
     }
   },
   components: {},
@@ -122,7 +137,7 @@ export default {
     getSong(){
       this.axios({
         method: 'get',
-        url: 'http://localhost:8080/song/list',
+        url: '/song/list',
       }).then((res) => {
         this.songs =res.data.data
         this.getButtonMenu()
@@ -149,7 +164,7 @@ export default {
     filterSong(){
       this.axios({
         method: 'get',
-        url: 'http://localhost:8080/song/paragraph',
+        url: 'song/paragraph',
         params: {
           flag: this.dateFilter
         },
@@ -189,8 +204,44 @@ export default {
 
     //批量删除
     batchDelete(){
-
+      let id = ''
+      for(let i = 0; i < this.checkbox.value1.length; i++){
+        id = id + this.checkbox.value1[i] + ','
+      }
+      console.log(id)
+      this.axios({
+        method: 'delete',
+        url: this.GLOBAL.baseUrl + '/song/many',
+        params: {
+          id: id
+        },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then((res) => {
+        console.log(res.data)
+        if(res.data.code == 1){
+          alert("删除成功")
+          this.openSimple = false
+          this.getSong()
+        }
+      })
     },
+    //单个删除
+    singleDelete(id){
+      this.axios({
+        method: 'delete',
+        url: '/song/single/' + id,
+      }).then((res) => {
+        console.log(res.data)
+        if(res.data.code == 1){
+          alert("删除成功")
+          this.openSimple = false
+          this.getSong()
+        }
+      })
+    },
+
 
     //导入、下载模板
     downloadModel(){
@@ -220,24 +271,30 @@ export default {
       })
     },
 
+    //批量导入
     importSong(event){
-      alert(1)
-				let formData = new FormData();
+        // console.log(event)
+        //新构建一个表单
+        let formData = new FormData();
+        //如果多个文件，对文件进行遍历
 				for (let j = 0; j < event.target.files.length; j++) {
+          //以键值对关系存入表单
 					formData.append('file', event.target.files[j]);
-					this.axios({
+        }
+        this.axios({
 						method: 'post',
-						url: 'http://localhost:8080/resources/guide',
+            url: '/resources/guide',
+            data: formData,
 						headers: {
 							'Content-Type': 'multipart/form-data'
-						},
-						data: formData,
-						processData: false,
-						contentType: false
+						}
 					}).then(res => {
-					});
-				}
-    }
+            if(res.data.code == 1){
+              alert('导入成功')
+            }
+					}); 
+        
+    },
 
 
   },
@@ -294,5 +351,10 @@ export default {
     opacity: 0;
     position: relative;
     right: 80px;
+  }
+
+  .first-c {
+    display:flex;
+    align-items: center;
   }
 </style>

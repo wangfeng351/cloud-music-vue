@@ -12,6 +12,8 @@
     "core-js": "^3.6.4",
     "echarts": "^4.7.0",
     "muse-ui": "^3.0.2",
+    "muse-ui-message": "^0.2.1",
+    "muse-ui-toast": "^0.3.0",
     "qs": "^6.9.3",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",

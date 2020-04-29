@@ -68,7 +68,7 @@
 export default {
   data () {
     return {
-      open: 'send',
+      open: '',
       user:JSON.parse(localStorage.getItem('user')),
       drawer: true,
       menus: [],
@@ -91,7 +91,7 @@ export default {
       this.roleId = this.$route.query.roleId
       this.axios({
         method: 'get',
-        url: 'http://localhost:8080/sysRole/list',
+        url: '/sysRole/list',
         params: {
           roleId: 1
         },

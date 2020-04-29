@@ -75,7 +75,7 @@ export default {
       this.currentTime = new Date().getTime()
       this.axios({
         method: 'get',
-        url: 'http://localhost:8080/captcha',
+        url: '/captcha',
         // 将请求数据转换为form-data格式
         params: {
           name: this.currentTime
@@ -87,8 +87,10 @@ export default {
       }).then((res) => {
         //使用$refs获取网页标签
         let img = this.$refs.image
+        //const blob = new Blob([res.data], {type: 'image/jpeg'})
         //将接收到的数据转成地址
         let url = window.URL.createObjectURL(res.data)
+        //console.log(blob)
         //赋值给图片标签的src
         img.src = url
       })
@@ -100,7 +102,7 @@ export default {
         //模拟后端接口数据
         this.axios({
           method: 'post',
-          url: 'http://localhost:8080/sysAdmin/login',
+          url: '/sysAdmin/login',
           data: {
             name: this.validateForm.username,
             password: this.validateForm.password,
@@ -117,6 +119,8 @@ export default {
             localStorage.setItem('token', data.token)
             //获取用户角色
             this.roles = data.roles
+            console.log(this.roles)
+            console.log(data.roles)
             //获取用户信息并存入Vuex和localStorage
             localStorage.setItem('user', JSON.stringify(data.user))
             this.$store.commit('setUser', this.user)
@@ -134,32 +138,9 @@ export default {
       })
     },
 
-    //获取用户角色
-    getRole(token) {
-      this.axios({
-        method: 'get',
-        url: 'http://localhost:8080/sysAdmin/menu',
-        params: {
-          name: this.validateForm.username
-        },
-        // 3、设置请求头Content-Type
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: token
-        }
-      }).then((res) => {
-        this.roles = res.data.data
-        if (this.roles.length > 1) {
-          this.openSimple = true
-        }
-      })
-    },
-
     //进入主页
     goIndex(item) {
-      console.log('参数' + item.name)
       localStorage.setItem('roleId', item.roleId)
-      console.log(this.validateForm.username)
       this.$router.push({
         name: 'layout',
         query: {
