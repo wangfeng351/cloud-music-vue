@@ -75,7 +75,7 @@ export default {
       this.currentTime = new Date().getTime()
       this.axios({
         method: 'get',
-        url: '/captcha',
+        url:'http://localhost:8080/captcha',
         // 将请求数据转换为form-data格式
         params: {
           name: this.currentTime
@@ -102,7 +102,7 @@ export default {
         //模拟后端接口数据
         this.axios({
           method: 'post',
-          url: '/sysAdmin/login',
+          url: 'http://localhost:8080/sysAdmin/login',
           data: {
             name: this.validateForm.username,
             password: this.validateForm.password,
@@ -112,18 +112,16 @@ export default {
             Verify: this.currentTime
           }
         }).then((res) => {
-          console.log(res.data)
           if (res.data.code == 1) {
             let data = res.data.data
             //登录成功，将返回的token存入localStorage，并且也存入Vuex中
             localStorage.setItem('token', data.token)
             //获取用户角色
             this.roles = data.roles
-            console.log(this.roles)
-            console.log(data.roles)
             //获取用户信息并存入Vuex和localStorage
             localStorage.setItem('user', JSON.stringify(data.user))
-            this.$store.commit('setUser', this.user)
+            console.log(localStorage.getItem('user'))
+            this.$store.commit('setUser', data.user)
             this.$store.commit('setToken', data.token)
             //再进入主页之前调用查询用户角色的方法，看是否存在多个用户
           } else {

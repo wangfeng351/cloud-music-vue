@@ -53,12 +53,10 @@ axios.interceptors.request.use((config) => {
   if (['/sysAdmin/login', '/captcha'].indexOf(config.url) === -1) {
     const token = localStorage.getItem('token')
     const roleId = localStorage.getItem('roleId')
-    const adminId = JSON.parse(localStorage.getItem('user')).userId
     if (token) {
       //添加统一请求头
       config.headers.Authorization = token
       config.headers.roleId = roleId
-      config.headers.adminId = adminId
     }
     config.baseURL = 'http://localhost:8080'
   }

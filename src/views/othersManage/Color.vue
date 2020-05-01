@@ -11,6 +11,7 @@
         class="btn"
         @click="downloadFile()"
       >下载文件</mu-button>
+      <a href="www.baidu.com"></a>
   </div>
 </template>
 
