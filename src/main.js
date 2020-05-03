@@ -10,6 +10,7 @@ import qs from 'qs';
 Vue.prototype.qs = qs;
 import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';
+import vuetify from '@/plugins/vuetify'
 
 
 import VueMaterial from 'vue-material'
@@ -67,5 +68,6 @@ axios.interceptors.request.use((config) => {
 new Vue({
   router,
   store,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')

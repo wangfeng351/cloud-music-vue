@@ -8,7 +8,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #ebf2f6;
+    background-color: #7f7fd5;
   }
 </style>
 

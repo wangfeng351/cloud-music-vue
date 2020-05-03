@@ -1,117 +1,50 @@
 <template>
   <div class="container1">
-    <!-- 头部导航 -->
-    <div class="nav">
-      <md-toolbar class="md-primary" md-elevation="1">
+    <mu-appbar color="primary">
+      <mu-button icon slot="left" @click="active1=!active1">
+        <mu-icon value="menu"></mu-icon>
+      </mu-button>
+      <mu-button icon slot="left" @click="active1=!active1">
         <mu-icon class="toggle-icon" size="36" value="cloud"></mu-icon>
-        <h3 class="md-title" style="flex: 1">Cloud Music 管理系统</h3>
-        <input ref="file" class="file" type="file" @change="uploadAvatar($event)" />
-        <mu-tooltip content="全屏" style="margin-right: 20px">
-          <mu-icon class="toggle-icon" size="28" value="zoom_out_map"></mu-icon>
-        </mu-tooltip>
-        <!-- 头像 -->
-        <mu-menu placement="top-start" open-on-hover>
-          <md-avatar class="md-avatar-icon md-large">
-            <img :src="user.avatar" @click="changeAvatar()" alt />
-          </md-avatar>
-          <!-- 修改用户信息 -->
-          <mu-list slot="content">
-            <mu-list-item button @click="openSimple=true">
-              <mu-list-item-title>修改个人信息</mu-list-item-title>
-            </mu-list-item>
-            <mu-dialog title="个人信息" width="500" :open.sync="openSimple">
-              <mu-card width="490">
-                <mu-card-media style="height: 160px; width: 100%">
-                  <img :src="user.avatar" style="height: 160px; width: 100%" />
-                </mu-card-media>
-                <p>
-                  用户名:
-                  <mu-text-field v-model="user.name" class="info-input" :disabled="userful"></mu-text-field>
-                </p>
-                <p>
-                  <span>ID:</span>
-                  <mu-text-field v-model="user.userId" class="info-input" :disabled="userful"></mu-text-field>
-                  <br />
-                </p>
-                <mu-button color="success" @click="updateAdminInfo()">{{message}}</mu-button>
-              </mu-card>
-              <mu-button slot="actions" flat color="primary" @click="openSimple=false">Close</mu-button>
-            </mu-dialog>
-            <!-- 修改密码 -->
-            <mu-list-item button @click="openSimple1=true">
-              <mu-list-item-title>修改密码</mu-list-item-title>
-            </mu-list-item>
-            <mu-dialog title="个人信息" width="500" :open.sync="openSimple1">
-              <p>
-                输入新密码:
-                <mu-text-field v-model="password" class="info-input"></mu-text-field>
-              </p>
-              <p>
-                确认密码:
-                <mu-text-field v-model="password1" class="info-input"></mu-text-field>
-                <br />
-              </p>
-              <mu-button color="success" @click="updateAdminPassword()">确认修改</mu-button>
-              <mu-button slot="actions" flat color="primary" @click="openSimple1=false">Close</mu-button>
-            </mu-dialog>
-
-            <!-- 退出 -->
-            <mu-list-item button @click="logout">
-              <mu-list-item-title>退出</mu-list-item-title>
-            </mu-list-item>
-          </mu-list>
-        </mu-menu>
-      </md-toolbar>
-    </div>
-    <div style="height:100%; width:100%; display:flex">
+      </mu-button>
+      <h3 class="md-title" style="flex: 1">Cloud Music 管理系统</h3>
+    </mu-appbar>
+    <mu-row style="height:100%">
       <!-- 侧边栏 -->
-      <div class="menu">
-        <mu-list toggle-nested>
-          <mu-list-item
-            v-for="(item, index) in menus"
-            :key="index"
-            button
-            :ripple="false"
-            nested
-            :open="open === 'stared'"
-            @toggle-nested="open = arguments[0] ? item.title : ''"
-          >
-            <template v-if="item.subMenus.length == 0">
-              <mu-list-item-action>
-                <mu-icon :value="item.icon"></mu-icon>
-              </mu-list-item-action>
-              <router-link :to="item.path">
-                <mu-list-item-title>{{item.title}}</mu-list-item-title>
-              </router-link>
-            </template>
-            <template v-else>
-              <mu-list-item-action>
-                <mu-icon class="toggle-icon" size="24" :value="item.icon"></mu-icon>
-              </mu-list-item-action>
-              <mu-list-item-title>{{item.title}}</mu-list-item-title>
-              <mu-list-item-action>
-                <mu-icon class="toggle-icon" size="24" value="keyboard_arrow_down"></mu-icon>
-              </mu-list-item-action>
-              <mu-list-item
-                v-for="(item1, index1) in item.subMenus"
-                :key="index1"
-                button
-                :ripple="false"
-                slot="nested"
-              >
-                <mu-list-item-action>
-                  <mu-icon class="toggle-icon" size="24" :value="item1.icon"></mu-icon>
-                </mu-list-item-action>
-                <router-link :to="item1.path">
-                  <mu-list-item-title>{{item1.title}}</mu-list-item-title>
-                </router-link>
-              </mu-list-item>
-            </template>
-          </mu-list-item>
-        </mu-list>
-      </div>
-      <router-view></router-view>
-    </div>
+      <mu-col span="2" v-if="active1" class="list">
+         <v-list style="background-color: rgba(0,0,0,0)">
+              <v-list-group v-for="(menu, parent) in menus" :key="parent" no-action>
+                <template v-slot:activator v-ripple>
+                  <v-list-item-icon>
+                    <mu-icon class="toggle-icon" size="24" :value="menu.icon"></mu-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content v-if="menu.subMenus.length === 0">
+                    <router-link :to="menu.path" v-if="menu.subMenus.length === 0" style="text-decoration: none; color:black">
+                      <v-list-item-title class="link">{{ menu.title }}</v-list-item-title>
+                    </router-link>
+                  </v-list-item-content>
+                  <v-list-item-content v-else>
+                    <v-list-item-title class="link">{{ menu.title }}</v-list-item-title>
+                  </v-list-item-content>
+                </template>
+
+                <v-list-item class="sub-menu" v-for="(subMenu, current) in menu.subMenus" :key="current" v-ripple link>
+                  <v-list-item-icon>
+                    <mu-icon class="toggle-icon" size="24" :value="subMenu.icon"></mu-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <router-link :to="subMenu.path" style="text-decoration: none;color:black  ">
+                      <v-list-item-title class="link">{{ subMenu.title }}</v-list-item-title>
+                    </router-link>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-group>
+            </v-list>
+      </mu-col>
+      <mu-col span="10" fill>
+        <router-view></router-view>
+      </mu-col>
+    </mu-row>
   </div>
 </template>
 
@@ -130,11 +63,13 @@ export default {
       userful: true,
       message: '编辑',
       password: '',
-      password1: ''
+      password1: '',
+      active1: true
     }
   },
   created() {
     this.getAdminMenu()
+    localStorage.setItem("token", "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6Ilt7XCJyb2xlSWRcIjoxLFwicm9sZU5hbWVcIjpcImFkbWluXCJ9LHtcInJvbGVJZFwiOjIsXCJyb2xlTmFtZVwiOlwiZWRpdG9yXCJ9XSIsImlzcyI6ImF1dGgwIiwiZXhwIjoxNTg4NTAzOTE1LCJ1c2VySWQiOiJFMTBBREMzOTQ5QkE1OUFCQkU1NkUwNTdGMjBGODgzRSJ9.nwkZcp9Hl4ZHW4_NKx54jekiCQyKooPyDzFoINFfn_Y")
   },
   methods: {
     logout() {
@@ -159,6 +94,7 @@ export default {
       }).then((res) => {
         // this.user = res.data.data.user
         // this.menus = res.data.data.permissions
+        console.log(res)
         if (res.data.code == 1) {
           let data = res.data.data
           localStorage.setItem('menuList', JSON.stringify(data.permissions))
@@ -187,7 +123,9 @@ export default {
       var _this = this
       client.multipartUpload(imgUrl, file).then(function(result) {
         _this.avatar = result.res.requestUrls[0]
-        _this.updateAdminAvatar(_this.avatar)
+        console.log(result)
+        console.log('链接地址：' + _this.avatar)
+        // _this.updateAdminAvatar(_this.avatar)
       })
     },
     //更换头像
@@ -272,16 +210,13 @@ export default {
   overflow: hidden;
 }
 
-.menu {
-  width: 220px;
-  background-color: white;
-  box-shadow: -3px 5px 1px 5px white;
-  height: 600px;
-  margin: 20px 20px;
-}
-
 .md-toolbar + .md-toolbar {
   margin-top: 16px;
+}
+
+.list {
+  background-image: linear-gradient( #7f7fd5, #91eae4);
+  height: 100%;
 }
 
 .container1 {
@@ -314,8 +249,7 @@ a {
   }
 }
 
-* {
-  list-style: none;
-  text-decoration: none;
+.sub-menu {
+  margin-left: 30px;
 }
 </style>
