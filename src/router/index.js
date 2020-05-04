@@ -19,6 +19,11 @@ Vue.use(VueRouter)
         component: Dashboard
       },
       {
+        path: 'signIn',
+        name: 'SignIn',
+        component: () => import('../views/home/SignIn.vue')
+      },
+      {
         path: 'music',
         name: 'Music',
         component: () => import('../views/musicManage/Music.vue')

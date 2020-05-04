@@ -112,6 +112,7 @@ export default {
             Verify: this.currentTime
           }
         }).then((res) => {
+          console.log(res.data)
           if (res.data.code == 1) {
             let data = res.data.data
             //登录成功，将返回的token存入localStorage，并且也存入Vuex中
