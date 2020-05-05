@@ -26,27 +26,28 @@ Vue.prototype.GLOBAL = global_
 import echarts from "echarts";
 Vue.prototype.$echarts = echarts;
 // 导航钩子，全局钩子
-router.beforeEach((to, from, next) => {
-  let token = localStorage.getItem('token')
-  let isLogin
-  if (!token) {
-    isLogin = false
-  } else {
-    isLogin = true
-  }
-  if (!isLogin) {
-    if (to.path !== '/login') {
-      return next({ path: '/login' })
-    } else {
-      next()
-    }
-  } else {
-    if (to.path === '/login') {
-      return next({ path: '/' })
-    }
-    next()
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   let token = localStorage.getItem('token')
+//   // alert(token) 
+//   let isLogin
+//   if (!token) {
+//     isLogin = false
+//   } else {
+//     isLogin = true
+//   }
+//   if (!isLogin) {
+//     if (to.path !== '/login') {
+//       return next({ path: '/login' })
+//     } else {
+//       next()
+//     }
+//   } else {
+//     if (to.path === '/login') {
+//       return next({ path: '/' })
+//     }
+//     next()
+//   }
+// })
 
 //全局请求拦截
 axios.interceptors.request.use((config) => {

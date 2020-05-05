@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/login/Login.vue'
+import GithubLogin from '../views/login/GithubLogin.vue'
 import layout from '../views/layout.vue'
 import Dashboard from '../views/home/Dashboard.vue'
 
@@ -64,6 +65,11 @@ Vue.use(VueRouter)
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/githubLogin',
+    name: 'GithubLogin',
+    component: GithubLogin
   },
   // {
   //   path: '*',

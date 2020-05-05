@@ -106,10 +106,10 @@ export default {
   created() {
     this.getAdminMenu()
     this.initWebSocket()
-    localStorage.setItem(
-      'token',
-      'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6Ilt7XCJyb2xlSWRcIjoxLFwicm9sZU5hbWVcIjpcImFkbWluXCJ9LHtcInJvbGVJZFwiOjIsXCJyb2xlTmFtZVwiOlwiZWRpdG9yXCJ9XSIsImlzcyI6ImF1dGgwIiwiZXhwIjoxNTg4NTAzOTE1LCJ1c2VySWQiOiJFMTBBREMzOTQ5QkE1OUFCQkU1NkUwNTdGMjBGODgzRSJ9.nwkZcp9Hl4ZHW4_NKx54jekiCQyKooPyDzFoINFfn_Y'
-    )
+    // localStorage.setItem(
+    //   'token',
+    //   'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6Ilt7XCJyb2xlSWRcIjoxLFwicm9sZU5hbWVcIjpcImFkbWluXCJ9LHtcInJvbGVJZFwiOjIsXCJyb2xlTmFtZVwiOlwiZWRpdG9yXCJ9XSIsImlzcyI6ImF1dGgwIiwiZXhwIjoxNTg4NTAzOTE1LCJ1c2VySWQiOiJFMTBBREMzOTQ5QkE1OUFCQkU1NkUwNTdGMjBGODgzRSJ9.nwkZcp9Hl4ZHW4_NKx54jekiCQyKooPyDzFoINFfn_Y'
+    // )
   },
   methods: {
     logout() {

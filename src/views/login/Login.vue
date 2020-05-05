@@ -18,6 +18,9 @@
         <mu-button color="primary" @click="submit">提交</mu-button>
         <mu-button @click="clear">重置</mu-button>
       </mu-form-item>
+      <mu-flex  justify-content="end">
+        <img src="./image/github.png" style="width:40px; height:40px; cursor: pointer;" @click="githubLogin()" alt="">
+      </mu-flex >
     </mu-form>
     <mu-dialog title="Dialog" width="360" :open.sync="roles.length > 1">
       <div>
@@ -146,6 +149,11 @@ export default {
           roleId: item.roleId
         }
       })
+    },
+
+    githubLogin(){
+      window.location.href =
+        'https://github.com/login/oauth/authorize?client_id=7db13c356933fea303d7&redirect_uri=http://localhost:8080/login/oauth2/code/github&state=1'
     },
 
     clear() {
