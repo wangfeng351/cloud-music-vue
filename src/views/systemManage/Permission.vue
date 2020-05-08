@@ -161,6 +161,8 @@ export default {
       }).then((res) => {
         this.menus = res.data.data.menus
         this.options = res.data.data.all
+        this.$store.commit('setMenuList', res.data.data.menus)
+        localStorage.setItem('menuList', JSON.stringify(res.data.data.menus))
         this.start(this.menus[0])
       })
     },
@@ -171,6 +173,7 @@ export default {
       }).then((res) => {
         if(res.data.code == 1){
           alert("删除成功")
+          this.getPermission()
         }
       })
     },
@@ -205,7 +208,6 @@ export default {
       this.permission.permissionType = ''
     },
     insertMenu1(){
-      alert(this.permission.permissionParent)
       this.axios({
         method: 'post',
         url: this.GLOBAL.baseUrl + '/sysMenu/single',
@@ -219,6 +221,8 @@ export default {
       }).then((res) => {
         if(res.data.code == 1){
           alert("新增成功")
+          this.getPermission()
+          this.btnShow = false
         }
       })
     }

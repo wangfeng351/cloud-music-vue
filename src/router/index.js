@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/login/Login.vue'
+import Login1 from '../github/Login.vue'
 import GithubLogin from '../views/login/GithubLogin.vue'
 import layout from '../views/layout.vue'
 import Dashboard from '../views/home/Dashboard.vue'
+import Jump from '../github/Jump.vue'
+import Index from '../github/Index.vue'
 
 Vue.use(VueRouter)
 
@@ -71,6 +74,23 @@ Vue.use(VueRouter)
     name: 'GithubLogin',
     component: GithubLogin
   },
+  //github练习（follower,following）
+  {
+    path: '/login1',
+    name: 'Login1',
+    component: Login1
+  },
+  {
+    path: '/jump',
+    name: 'Jump',
+    component: Jump
+  },
+  {
+    path: '/index',
+    name: 'Index',
+    component: Index
+  },
+
   // {
   //   path: '*',
   //   name: '404',

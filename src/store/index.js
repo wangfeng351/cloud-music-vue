@@ -6,10 +6,14 @@ const store = new Vuex.Store({
     token: localStorage.getItem('token'),
     user: JSON.parse(localStorage.getItem('user')),
     menuList: JSON.parse(localStorage.getItem('menuList')),
+    roleId: localStorage.getItem("roleId")
   },
   mutations: {
     setToken(state, data) {
       state.token = data
+    },
+    setRoleId(state, data) {
+      state.roleId = data
     },
     setUser(state, data) {
       state.user = data

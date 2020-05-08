@@ -225,7 +225,7 @@ export default {
   .roles {
     box-shadow: 2px 2px 2px 2px #ddd;
     height: 300px;
-    width: 40%;
+    width: 42%;
     background-color: white;
   }
 

@@ -62,7 +62,6 @@ export default {
   created() {
     this.getVerify()
   },
-
   watch: {
     //    password: function(){
     //    if(this.password.length >=6 && this.validateForm.username != null){
@@ -70,7 +69,6 @@ export default {
     //    }
     //  }
   },
-
   methods: {
     //获取验证码
     getVerify() {
@@ -134,12 +132,10 @@ export default {
         })
         // localStorage.setItem('user', JSON.stringify(user))
         // localStorage.setItem('menuList', JSON.stringify(this.menuList))
-
         // this.$store.commit('setUser', user)
         // this.$store.commit('setMenuList', this.menuList)
       })
     },
-
     //进入主页
     goIndex(item) {
       localStorage.setItem('roleId', item.roleId)
@@ -150,12 +146,10 @@ export default {
         }
       })
     },
-
     githubLogin(){
       window.location.href =
         'https://github.com/login/oauth/authorize?client_id=7db13c356933fea303d7&redirect_uri=http://localhost:8080/login/oauth2/code/github&state=1'
     },
-
     clear() {
       this.$refs.form.clear()
       this.validateForm = {
@@ -172,9 +166,8 @@ export default {
   max-width: 600px;
   padding: 20px 20px;
   background-color: white;
-  box-shadow: 1px 1px 5px 2px #eee;
+  box-shadow: 1px 1px 2px 2px #fff;
 }
-
 .container {
   width: 100%;
   height: 100%;

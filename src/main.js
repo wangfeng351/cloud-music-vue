@@ -11,6 +11,7 @@ Vue.prototype.qs = qs;
 import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';
 import vuetify from '@/plugins/vuetify'
+import midjs from './plugins/mid'
 
 
 import VueMaterial from 'vue-material'
@@ -25,7 +26,11 @@ Vue.prototype.GLOBAL = global_
 
 import echarts from "echarts";
 Vue.prototype.$echarts = echarts;
-// 导航钩子，全局钩子
+
+//全局组件
+import Global_Component from './utils/globalComponents'
+Vue.use(Global_Component)
+//导航钩子，全局钩子
 // router.beforeEach((to, from, next) => {
 //   let token = localStorage.getItem('token')
 //   // alert(token) 
@@ -70,5 +75,6 @@ new Vue({
   router,
   store,
   vuetify,
+  midjs,
   render: h => h(App)
 }).$mount('#app')

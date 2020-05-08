@@ -2,9 +2,9 @@
   <div class="container1">
       <div class="operation">
         <span  v-for="(item, index) in buttonMenu" :key="index">
-        <mu-button color="" @click="openSimple=true" v-if="item.title === '批量删除'">
+        <mu-button class="operationBtn" color="" @click="openSimple=true" v-if="item.title === '批量删除'">
          <mu-icon left :value="item.icon"></mu-icon>
-        批量删除
+         {{item.title}}
         </mu-button>
 
         <mu-dialog title="删除提醒" width="360" :open.sync="openSimple">
@@ -15,7 +15,7 @@
 
          <mu-button color="error" @click="openAlertDialog()" v-if="item.title === '批量导入'">
           <mu-icon left :value="item.icon"></mu-icon>
-          批量导入
+          {{item.title}}
         </mu-button>
         </span>
         <mu-dialog title="批量导入注意事项" style="line-height: 30px" width="600" max-width="80%" :esc-press-close="false" :overlay-close="false" :open.sync="openAlert">
@@ -309,13 +309,15 @@ export default {
     .operation {
       display: flex;
       margin-top: 20px;
+      margin-left: 60px;
     }
     .song-table {
       margin: 10px auto;
       width: 90%;
       padding: 10px 10px;
-      box-shadow: 0px 2px 2px 3px #ddd;
-      max-height: 600px;
+      box-shadow: 0px 2px 2px 4px #8e44ad;
+      min-height: 600px;
+      background-color: #c9d6ff;
       .search {
         display: flex;
         justify-content: space-between;
@@ -356,5 +358,10 @@ export default {
   .first-c {
     display:flex;
     align-items: center;
+  }
+
+  .operationBtn {
+    margin-right: 20px;
+    margin-left: 20px;
   }
 </style>

@@ -18,8 +18,9 @@ export default {
       localStorage.setItem('user', JSON.stringify(this.user.user))
       this.$store.commit('setUser', this.user.user)
       this.$store.commit('setToken', this.user.token)
+      localStorage.setItem('token', this.user.token)
+      console.log("token" + this.user.token)
       let roleId = this.user.roles[0].roleId
-      localStorage.setItem('roleId', roleId)
       this.$router.push({
         name: 'layout',
         query: {
